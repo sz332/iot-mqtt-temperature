@@ -1,0 +1,61 @@
+<html>
+
+<head>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <script>
+        function websocketConnect() {
+
+            Plotly.newPlot(document.getElementById('tester'), [], {
+                margin: {
+                    t: 0
+                }
+            });
+
+            var x_coordinates = [];
+            var y_coordinates = [];
+
+            ws = new WebSocket((window.location.protocol == 'https:' ? 'wss://' : 'ws://') + window.location.host);
+
+            ws.onmessage = function(message) {
+                console.log("message received: " + message.data);
+                document.getElementById('messageFromServer').innerHTML = message.data;
+
+                let data = JSON.parse(message.data);
+
+                x_coordinates.push(data.date);
+                y_coordinates.push(data.temperature);
+
+                Plotly.newPlot(document.getElementById('tester'), [{
+                    x: x_coordinates,
+                    y: y_coordinates
+                }], {});
+            };
+
+        }
+
+        function refresh() {
+            let value = parseInt(document.getElementById('refreshRate').value);
+            ws.send(JSON.stringify({
+                period: value
+            }));
+        }
+    </script>
+</head>
+
+<body onload="websocketConnect()">
+    Hello world from NodeJS
+
+    <div id="tester">
+
+    </div>
+
+    <div id="messageFromServer">
+        No message received yet...
+    </div>
+
+    <input id="refreshRate"><button onclick="refresh()">Refresh</button>
+
+</body>
+
+</html>

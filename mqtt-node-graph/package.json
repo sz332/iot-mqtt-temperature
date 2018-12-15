@@ -1,0 +1,16 @@
+{
+    "name": "mqtt-node-graph",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Zsolt Sandor",
+    "license": "Apache License",
+    "dependencies": {
+        "express": "^4.16.4",
+        "mqtt": "^2.18.8",
+        "ws": "^6.1.2"
+    }
+}
